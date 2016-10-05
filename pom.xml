@@ -8,7 +8,7 @@
     <name>cs20162-aula07</name>
 
     <description>
-        Projeto de referência (exemplo) inicial de desenvolvimento em Java com uso de JUnit.
+        Submissão da atividade proposta na Aula 07 de Construção de Software
     </description>
 
     <url>https://github.com/cleydsonjr/cs20162-aula07</url>
@@ -34,6 +34,12 @@
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>joda-time</groupId>
+            <artifactId>joda-time</artifactId>
+            <version>2.9.4</version>
+            <scope>compile</scope>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
