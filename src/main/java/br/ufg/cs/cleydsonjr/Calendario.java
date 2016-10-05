@@ -42,14 +42,20 @@ public class Calendario {
 			if (dataConhecidaConvertida.isEqual(dataConvertida)) {
 				retorno = diaSemana;
 			} else {
-				retorno = Math.abs(diasEntreDatas);
-
-				if (retorno > 6) {
-					retorno = retorno - 7 + diaSemana;
-				}
-
-				while (retorno > 6) {
-					retorno -= 7;
+				if (diasEntreDatas > 0) {
+					retorno = diasEntreDatas;
+					if (retorno > 7) {
+						retorno = (retorno % 7) - 7 + diaSemana;
+					} else {
+						retorno = retorno - 7 + diaSemana;
+					}
+				} else {
+					retorno = Math.abs(diasEntreDatas);
+					if (retorno > 7) {
+						retorno = (retorno % 7) - 1 + diaSemana;
+					} else {
+						retorno = retorno + diaSemana;
+					}
 				}
 			}
 		} else {
