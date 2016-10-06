@@ -128,12 +128,19 @@ public class CalendarioTest {
 	public void diaSemanaRetornaResultadoCorretoParaCenarioConhecido6() throws Exception {
 		int diaSemana = calendario.diaSemana(20160829, 2016, 20160901, 3);
 
-		Assert.assertEquals("Deveria ter retornado dia da semana 0 (segunda)", 6, diaSemana);
+		Assert.assertEquals("Deveria ter retornado dia da semana 0 (segunda)", 0, diaSemana);
 	}
 
 	@Test
 	public void diaSemanaRetornaResultadoCorretoParaCenarioConhecido7() throws Exception {
 		int diaSemana = calendario.diaSemana(20161214, 2016, 20160901, 3);
+
+		Assert.assertEquals("Deveria ter retornado dia da semana 2 (quarta)", 2, diaSemana);
+	}
+
+	@Test
+	public void diaSemanaRetornaResultadoCorretoParaCenarioConhecido8() throws Exception {
+		int diaSemana = calendario.diaSemana(20160831, 2016, 20160901, 3);
 
 		Assert.assertEquals("Deveria ter retornado dia da semana 2 (quarta)", 2, diaSemana);
 	}
