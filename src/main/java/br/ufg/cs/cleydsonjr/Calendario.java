@@ -122,7 +122,7 @@ public final class Calendario {
      * @return Se o numero é válido
      */
     private static boolean anoValido(int ano) {
-        return ano > 0;
+        return ano > ZERO;
     }
 
     /**
@@ -132,7 +132,7 @@ public final class Calendario {
      * @return Se o numero é válido
      */
     private static boolean diaSemanaValido(int diaSemana) {
-        return diaSemana >= 0 && diaSemana <= 6;
+        return diaSemana >= SEGUNDA && diaSemana <= DOMINGO;
     }
 
     /**
@@ -142,10 +142,11 @@ public final class Calendario {
      * @return Se o numero é válido
      */
     private static boolean dataValida(Integer data) {
+        int tamanhoEntradaEsperado = 8;
         try {
             String dataString = data.toString();
             FORMATADOR_PADRAO.parseDateTime(dataString);
-            return dataString.length() == 8;
+            return dataString.length() == tamanhoEntradaEsperado;
         } catch (Exception ex) {
             return false;
         }
