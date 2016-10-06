@@ -5,15 +5,48 @@ import org.joda.time.LocalDate;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 
-public class Calendario {
+/**
+ * Auxiliar para obtenção de informações relacionadas a datas
+ */
+public final class Calendario {
+
+    /**
+     * Representação do número zero usado na implementção interna do algoritmo
+     */
     private static final int ZERO = 0;
+
+    /**
+     * Constante representando o valor do dia da semana Domingo
+     */
+    public static final int DOMINGO = 6;
+
+    /**
+     * Constante representando o valor do dia da semana Segunda
+     */
+    public static final int SEGUNDA = 0;
+
+    /**
+     * Constante guardando a quantidade de dias na semana
+     */
+    private static final int DIAS_SEMANA = 7;
+
+    /**
+     * Constante guardando o valor que será retornado em caso de entrada inválida
+     */
     private static final int ENTRADA_INVALIDA = -1;
 
+    /**
+     * Constante guardando a representação do padrão esperado de data tratada pela classe
+     */
     private static final String FORMATO_PADRAO = "yyyyMMdd";
-    private DateTimeFormatter formatoData;
 
-    public Calendario() {
-        this.formatoData = DateTimeFormat.forPattern(FORMATO_PADRAO);
+    /**
+     * Formatador padrão para parse das datas informadas
+     */
+    private static final DateTimeFormatter FORMATADOR_PADRAO;
+
+    static {
+        FORMATADOR_PADRAO = DateTimeFormat.forPattern(FORMATO_PADRAO);
     }
 
     /**
@@ -29,8 +62,8 @@ public class Calendario {
      * @param diaSemana     O dia da semana correspondente à data conhecida
      * @return O dia da semana da data ou o -1
      */
-    public int diaSemana(int data, int bissexto, int dataConhecida, int diaSemana) {
-        int retorno;
+    public static int diaSemana(int data, int bissexto, int dataConhecida, int diaSemana) {
+        int diaSemanaCalculado;
 
         // Valida as entradas de acordo com as regras fornecidas
         if (dataValida(data) && dataValida(dataConhecida) && anoValido(bissexto) && diaSemanaValido(diaSemana)) {
@@ -42,52 +75,76 @@ public class Calendario {
             int diasEntreDatas = Days.daysBetween(dataConhecidaConvertida, dataConvertida).getDays();
 
             // Atribui inicialmente o dia da semana informado
-            retorno = diaSemana;
+            diaSemanaCalculado = diaSemana;
 
             // Se não for o mesmo dia informado, há diferença entre as datas
-            if (diasEntreDatas != 0) {
+            if (diasEntreDatas != ZERO) {
                 // Apenas o resto da divisão por 7 interessa
-                int dias = Math.abs(diasEntreDatas) % 7;
-                while (dias > 0) {
-                    if (diasEntreDatas > 0) {
+                int dias = Math.abs(diasEntreDatas) % DIAS_SEMANA;
+                while (dias > ZERO) {
+                    if (diasEntreDatas > ZERO) {
                         // Caso o dia informado seja posterior ao conhecido aumenta os dias
-                        retorno++;
-                        if (retorno > 6) {
-                            retorno = 0;
+                        diaSemanaCalculado++;
+                        if (diaSemanaCalculado > DOMINGO) {
+                            diaSemanaCalculado = SEGUNDA;
                         }
                     } else {
                         // Caso o dia informado seja anterior ao conhecido diminui os dias
-                        retorno--;
-                        if (retorno < 0) {
-                            retorno = 6;
+                        diaSemanaCalculado--;
+                        if (diaSemanaCalculado < SEGUNDA) {
+                            diaSemanaCalculado = DOMINGO;
                         }
                     }
                     dias--;
                 }
             }
         } else {
-            retorno = ENTRADA_INVALIDA;
+            diaSemanaCalculado = ENTRADA_INVALIDA;
         }
 
-        return retorno;
+        return diaSemanaCalculado;
     }
 
-    private LocalDate convertaData(Integer data) {
-        return formatoData.parseLocalDate(data.toString());
+    /**
+     * Converte um numero inteiro para LocalDate
+     *
+     * @param data o numero inteiro representando a data no formato esperado
+     * @return A data convertida
+     */
+    private static LocalDate convertaData(Integer data) {
+        return FORMATADOR_PADRAO.parseLocalDate(data.toString());
     }
 
-    private boolean anoValido(int ano) {
+    /**
+     * Valida um ano informado
+     *
+     * @param ano o numero do ano a ser validado
+     * @return Se o numero é válido
+     */
+    private static boolean anoValido(int ano) {
         return ano > 0;
     }
 
-    private boolean diaSemanaValido(int diaSemana) {
+    /**
+     * Valida um dia da semana informado
+     *
+     * @param diaSemana o numero do dia da semana a ser validado
+     * @return Se o numero é válido
+     */
+    private static boolean diaSemanaValido(int diaSemana) {
         return diaSemana >= 0 && diaSemana <= 6;
     }
 
-    private boolean dataValida(Integer data) {
+    /**
+     * Valida uma data informado
+     *
+     * @param data o numero da data a ser validada
+     * @return Se o numero é válido
+     */
+    private static boolean dataValida(Integer data) {
         try {
             String dataString = data.toString();
-            formatoData.parseDateTime(dataString);
+            FORMATADOR_PADRAO.parseDateTime(dataString);
             return dataString.length() == 8;
         } catch (Exception ex) {
             return false;
