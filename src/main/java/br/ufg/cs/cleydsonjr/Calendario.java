@@ -97,19 +97,7 @@ public final class Calendario {
                 // Apenas o resto da divisão por 7 interessa
                 int dias = Math.abs(diasEntreDatas) % DIAS_SEMANA;
                 while (dias > ZERO) {
-                    if (diasEntreDatas > ZERO) {
-                        // Caso o dia informado seja posterior ao conhecido aumenta os dias
-                        diaSemanaCalculado++;
-                        if (diaSemanaCalculado > DOMINGO) {
-                            diaSemanaCalculado = SEGUNDA;
-                        }
-                    } else {
-                        // Caso o dia informado seja anterior ao conhecido diminui os dias
-                        diaSemanaCalculado--;
-                        if (diaSemanaCalculado < SEGUNDA) {
-                            diaSemanaCalculado = DOMINGO;
-                        }
-                    }
+                    diaSemanaCalculado = processeDiaDaSemana(diaSemanaCalculado, diasEntreDatas);
                     dias--;
                 }
             }
@@ -118,6 +106,34 @@ public final class Calendario {
         }
 
         return diaSemanaCalculado;
+    }
+
+    /**
+     * Método auxiliar usado para processar iteração sobre o dia da semana.
+     *
+     * @param diaSemanaCalculado dia da semana a ser processado
+     * @param diasEntreDatas     quantidade de dias entre datas
+     * @return Dia processado
+     * @see Calendario#diaSemana(int, int, int, int)
+     */
+    private static int processeDiaDaSemana(final int diaSemanaCalculado, final int diasEntreDatas) {
+        int diaProcessado = diaSemanaCalculado;
+
+        if (diasEntreDatas > ZERO) {
+            // Caso o dia informado seja posterior ao conhecido aumenta os dias
+            diaProcessado++;
+            if (diaProcessado > DOMINGO) {
+                diaProcessado = SEGUNDA;
+            }
+        } else {
+            // Caso o dia informado seja anterior ao conhecido diminui os dias
+            diaProcessado--;
+            if (diaProcessado < SEGUNDA) {
+                diaProcessado = DOMINGO;
+            }
+        }
+
+        return diaProcessado;
     }
 
     /**
@@ -161,7 +177,7 @@ public final class Calendario {
             String dataString = data.toString();
             FORMATADOR_PADRAO.parseDateTime(dataString);
             return dataString.length() == TAMANHO_ENTRADA_ESPERADO;
-        } catch (Exception ex) {
+        } catch (Exception ignored) {
             return false;
         }
     }
